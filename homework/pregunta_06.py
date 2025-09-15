@@ -26,3 +26,29 @@ def pregunta_06():
      ('jjj', 5, 17)]
 
     """
+    conteo = {}  # Dictionary to hold key
+
+    with open('C:/Repositorios/LAB-01-programacion-basica-en-python-Ancarrenv-1/files/input/data.csv') as file:
+        for linea in file:
+            linea = linea.strip()
+            columnas = linea.split('\t')
+
+            bd = columnas[4].split(',')
+
+            for n in bd:
+                clave, valor = n.split(':')
+                valor = int(valor)
+
+                if clave not in conteo:
+                    conteo[clave] = []  # Initialize list for this key
+                conteo[clave].append(valor)  # Append value to the key's list
+
+    resultado = []
+    for clave in sorted(conteo.keys()):
+        valores = conteo[clave]
+    resultado.append((clave, min(valores), max(valores)))
+
+    return resultado
+
+
+print(pregunta_06())
