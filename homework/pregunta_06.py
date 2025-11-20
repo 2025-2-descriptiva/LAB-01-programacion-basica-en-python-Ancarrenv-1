@@ -26,29 +26,36 @@ def pregunta_06():
      ('jjj', 5, 17)]
 
     """
-    conteo = {}  # Dictionary to hold key
+    matriz = []
+    with open(r"files/input/data.csv", "r", encoding="utf-8") as data:
+        for fila in data:
+            columnas = fila.strip().split("\t")
+            matriz.append(columnas)
+    
+    # Diccionario final: clave -> lista de valores
+    diccionario = {}
 
-    with open('C:/Repositorios/LAB-01-programacion-basica-en-python-Ancarrenv-1/files/input/data.csv') as file:
-        for linea in file:
-            linea = linea.strip()
-            columnas = linea.split('\t')
+    # Recorremos cada fila
+    for fila in matriz:
+        pares = fila[4].split(",")  # columna 4 tiene los pares clave:valor
 
-            bd = columnas[4].split(',')
+        for par in pares:
+            clave, valor = par.split(":")
+            valor = int(valor)
 
-            for n in bd:
-                clave, valor = n.split(':')
-                valor = int(valor)
+            # Crear y agregar el valor a la lista de esa clave
+            if clave not in diccionario:
+                diccionario[clave] = [valor]
+            else:
+                diccionario[clave].append(valor)
+    
+    diccionario = dict(sorted(diccionario.items()))
+     # Convertir las listas de valores en tuplas (min, max)
+    diccionario = {k: (min(v), max(v)) for k, v in diccionario.items()}
+    resultado = list((k, v[0], v[1]) for k, v in diccionario.items())   
 
-                if clave not in conteo:
-                    conteo[clave] = []  # Initialize list for this key
-                conteo[clave].append(valor)  # Append value to the key's list
-
-    resultado = []
-    for clave in sorted(conteo.keys()):
-        valores = conteo[clave]
-    resultado.append((clave, min(valores), max(valores)))
-
+    # return diccionario
     return resultado
 
-
-print(pregunta_06())
+if __name__ == "__main__":
+    print(pregunta_06())
